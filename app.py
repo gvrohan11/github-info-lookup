@@ -57,7 +57,7 @@ def github_stats():
     if not username:
         return redirect("/bad_results")
 
-    print(username)
+    # print(username)
 
     api_url = f"https://api.github.com/users/{username}"
 
@@ -77,7 +77,7 @@ def github_stats():
     
     info = response.json()
 
-    print(info)
+    # print(info)
 
     information['user'] = info['login']
     information['num_repos'] = info['public_repos']
