@@ -19,7 +19,7 @@
             <ul>
                 <li><strong>Number of Repositories:</strong> {{ information.num_repos }}</li>
                 <li><strong>Total Fork Count:</strong> {{ information.num_forks }}</li>
-                <li><strong>Languages Used:</strong></li>
+                <li><strong>Languages Used (Language, Count):</strong></li>
                 <ul>
                     {% for language, count in information.languages %}
                         <li>{{ language }}: {{ count }}</li>
