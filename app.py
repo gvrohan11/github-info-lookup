@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 information = {}
 
-def get_forks(username):
+def get_forks_and_languages(username):
 
     global information
 
@@ -25,14 +25,24 @@ def get_forks(username):
         # return jsonify({"error": "User not found"}), 404
         return redirect("/bad_results")
     
-    fork_info = response.json()
+    all_info = response.json()
 
     count = 0
 
-    for repo in fork_info:
-        count += repo['forks']
+    lang_map = {}
 
-    return count
+    for repo in all_info:
+        count += repo['forks_count'] # 'forks'
+
+        if repo['language'] in lang_map:
+            lang_map[repo['language']] += 1
+        else:
+            if repo['language'] is not None:
+                lang_map[repo['language']] = 1
+
+    return count, lang_map
+
+
 
 
 
@@ -84,8 +94,14 @@ def github_stats():
 
     if info['public_repos'] == 0:
         information['num_forks'] = 0
+        information['languages'] = {}
     else:
-        information['num_forks'] = get_forks(username)
+        count, lang = get_forks_and_languages(username)
+        information['num_forks'] = count
+        sorted_languages = sorted(lang.items(), key=lambda item: item[1], reverse=True)
+        print("SORTED LANGS:")
+        print(sorted_languages)
+        information['languages'] = sorted_languages
 
     return redirect('/good_results')
 
